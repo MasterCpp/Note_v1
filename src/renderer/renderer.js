@@ -20,7 +20,7 @@ function windowBar(settings) {
 
 function checkbox(note, child = false) {
   const disabled = !child && note.children?.length > 0;
-  return `<button class="check${note.completedAt ? ' done' : ''}${disabled ? ' disabled' : ''}" data-action="toggle" data-id="${note.id}" ${disabled ? 'disabled title="请先完成全部子 Note"' : ''} aria-label="标记${note.completedAt ? '未完成' : '完成'}">${note.completedAt ? icons.tick : ''}</button>`;
+  return `<button class="check${note.completedAt ? ' done' : ''}${disabled ? ' disabled' : ''}" data-action="toggle" data-id="${note.id}" ${disabled ? 'disabled title="请先完成全部子 Note"' : ''} aria-label="标记${note.completedAt ? '未完成' : '完成'}">${note.completedAt ? '<span class="check-glyph">✓</span>' : ''}</button>`;
 }
 
 function entry(note, index, detailed = false) {

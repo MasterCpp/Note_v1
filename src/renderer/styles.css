@@ -49,7 +49,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid oklch(.69 .15 24)
 .check:hover { border-color: var(--red); }
 .check.done { border-color: var(--red); background: var(--red); }
 .check.disabled { cursor: not-allowed; opacity: .45; }
-.check .icon { width: 9px; height: 9px; stroke-width: 2.7; }
+.check-glyph { display: block; color: white; font-family: Arial, sans-serif; font-size: 12px; font-weight: 800; line-height: 1; transform: translateY(-.5px); }
 .entry-title { min-width: 0; overflow: hidden; border: 0; background: transparent; color: var(--ink); padding: 0; text-align: left; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
 .entry-title:hover { color: var(--red); }
 .entry-title.done { color: var(--muted); text-decoration: line-through; }
@@ -99,7 +99,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid oklch(.69 .15 24)
 .all-screen .entry-number { padding-top: 3px; font-size: 13px; }
 .all-screen .entry-top { gap: 10px; }
 .all-screen .check { width: 20px; height: 20px; border-radius: 5px; }
-.all-screen .check .icon { width: 13px; height: 13px; stroke-width: 2.9; }
+.all-screen .check-glyph { font-size: 14px; font-weight: 800; }
 .all-screen .entry-title { font-size: 18px; }
 .all-screen .entry-side { min-height: 26px; gap: 7px; }
 .all-screen .entry-progress { font-size: 12px; }
