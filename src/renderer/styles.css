@@ -99,7 +99,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid oklch(.69 .15 24)
 .all-screen .entry-number { padding-top: 3px; font-size: 13px; }
 .all-screen .entry-top { gap: 10px; }
 .all-screen .check { width: 20px; height: 20px; border-radius: 5px; }
-.all-screen .check .icon { width: 12px; height: 12px; stroke-width: 2.3; }
+.all-screen .check .icon { width: 13px; height: 13px; stroke-width: 2.9; }
 .all-screen .entry-title { font-size: 18px; }
 .all-screen .entry-side { min-height: 26px; gap: 7px; }
 .all-screen .entry-progress { font-size: 12px; }
