@@ -1,0 +1,24 @@
+{
+  "name": "idea-index",
+  "version": "0.1.0",
+  "description": "A local Windows desktop widget for capturing ideas.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "test": "node --test",
+    "package": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.ideaindex.desktop",
+    "productName": "每日索引",
+    "electronDist": "electron-runtime",
+    "files": ["src/**/*", "assets/**/*", "package.json"],
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  },
+  "devDependencies": {
+    "electron": "^37.2.1",
+    "electron-builder": "^26.0.12"
+  }
+}

@@ -1,0 +1,198 @@
+<!doctype html>
+<!-- THROWAWAY UI PROTOTYPE: Two deliberately different desktop-idea-widget directions. -->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>灵感挂件 · 两个视觉方向</title>
+  <style>
+    :root { font-family: "Microsoft YaHei UI", "PingFang SC", system-ui, sans-serif; color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: oklch(.94 .007 24); }
+    button, input { font: inherit; }
+    button { border: 0; cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 3px solid oklch(.69 .15 24); outline-offset: 3px; }
+    .canvas { display: grid; min-height: 100dvh; place-items: center; padding: 88px 20px 108px; }
+    .prototype-caption { position: fixed; top: 19px; left: 50%; z-index: 3; width: min(600px, calc(100vw - 32px)); transform: translateX(-50%); color: oklch(.27 .018 24); text-align: center; }
+    .prototype-caption strong { display: block; font-size: 14px; }
+    .prototype-caption span { display: block; margin-top: 5px; color: oklch(.49 .018 24); font-size: 12px; line-height: 1.5; }
+    .icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+    .prototype-bar { position: fixed; bottom: 20px; left: 50%; z-index: 3; display: flex; align-items: center; gap: 4px; transform: translateX(-50%); padding: 5px; border-radius: 10px; background: oklch(.18 .014 24); box-shadow: 0 10px 22px oklch(.18 .014 24 / .22); color: white; }
+    .prototype-bar button { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 7px; background: transparent; color: inherit; font-size: 19px; }
+    .prototype-bar button:hover { background: oklch(.31 .018 24); }
+    .prototype-bar strong { min-width: 108px; text-align: center; font-size: 12px; }
+    .prototype-hint { padding: 0 7px 0 3px; color: oklch(.79 .008 24); font-size: 11px; }
+
+    /* Direction 1: Midnight Signal — a dark, always-ready capture instrument. */
+    .signal { --ink: oklch(.94 .006 24); --muted: oklch(.67 .014 24); --line: oklch(.32 .014 24); --red: oklch(.58 .19 24); --red-strong: oklch(.51 .19 24); width: min(470px, 100%); overflow: hidden; border: 1px solid oklch(.28 .014 24); border-radius: 16px; background: oklch(.15 .012 24); box-shadow: 0 22px 50px oklch(.13 .01 24 / .36); color: var(--ink); }
+    .signal .topline { display: flex; align-items: center; justify-content: space-between; min-height: 51px; padding: 0 13px 0 17px; border-bottom: 1px solid var(--line); }
+    .signal .wordmark { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .signal .signal-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--red); }
+    .signal .quiet-action { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 8px; background: transparent; color: var(--muted); }
+    .signal .quiet-action:hover { background: oklch(.22 .014 24); color: var(--ink); }
+    .signal .capture { padding: 21px 18px 15px; }
+    .signal .capture-label { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 11px; }
+    .signal .capture-label strong { color: var(--ink); font-size: 11px; }
+    .signal .capture-form { display: flex; gap: 8px; margin-top: 10px; border-bottom: 1px solid oklch(.47 .023 24); }
+    .signal .capture-form:focus-within { border-color: var(--red); }
+    .signal .capture-input { min-width: 0; flex: 1; height: 44px; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 16px; }
+    .signal .capture-input::placeholder { color: oklch(.54 .017 24); }
+    .signal .capture-send { display: grid; width: 40px; height: 40px; place-items: center; align-self: center; border-radius: 9px; background: var(--red); color: white; }
+    .signal .capture-send:hover { background: var(--red-strong); }
+    .signal .capture-send .icon { width: 19px; height: 19px; }
+    .signal .queue-title { display: flex; justify-content: space-between; padding: 7px 18px 5px; color: var(--muted); font-size: 11px; }
+    .signal .queue { padding: 0 18px 10px; }
+    .signal .signal-note { border-bottom: 1px solid var(--line); }
+    .signal .signal-note:last-child { border-bottom: 0; }
+    .signal .note-head { display: flex; align-items: center; min-height: 56px; gap: 10px; }
+    .signal .sequence { width: 22px; flex: 0 0 auto; color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 11px; }
+    .signal .check { display: grid; width: 19px; height: 19px; flex: 0 0 auto; place-items: center; border: 1.5px solid oklch(.59 .02 24); border-radius: 50%; background: transparent; color: oklch(.15 .012 24); }
+    .signal .check:hover { border-color: var(--red); }
+    .signal .check.done { border-color: var(--red); background: var(--red); }
+    .signal .check .icon { width: 12px; height: 12px; stroke-width: 2.6; }
+    .signal .note-name { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+    .signal .note-name.done { color: var(--muted); text-decoration: line-through; }
+    .signal .progress { color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 11px; }
+    .signal .expand { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 6px; background: transparent; color: var(--muted); }
+    .signal .expand:hover { background: oklch(.22 .014 24); color: var(--ink); }
+    .signal .expand .icon { width: 15px; height: 15px; }
+    .signal .children { margin: -2px 0 11px 51px; padding-left: 13px; border-left: 1px solid oklch(.39 .018 24); }
+    .signal .children[hidden] { display: none; }
+    .signal .child { display: flex; align-items: center; min-height: 31px; gap: 8px; color: oklch(.79 .011 24); font-size: 13px; }
+    .signal .child .check { width: 15px; height: 15px; border-radius: 5px; }
+    .signal .child .icon { width: 10px; height: 10px; }
+    .signal .child.done { color: var(--muted); text-decoration: line-through; }
+    .signal .add-child { min-height: 29px; padding: 0; background: transparent; color: var(--red); font-size: 12px; font-weight: 700; }
+    .signal .add-child:hover { color: oklch(.71 .18 24); }
+    .signal .foot { display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 0 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .signal .all-notes { padding: 7px 0; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; }
+    .signal .all-notes:hover { color: var(--red); }
+
+    /* Direction 2: Daily Index — a bright private ledger, made for scanning. */
+    .index { --ink: oklch(.19 .016 24); --muted: oklch(.49 .017 24); --line: oklch(.86 .008 24); --red: oklch(.49 .16 24); width: min(500px, 100%); overflow: hidden; border: 1px solid oklch(.80 .01 24); border-radius: 12px; background: oklch(1 0 0); box-shadow: 0 11px 25px oklch(.22 .016 24 / .12); color: var(--ink); }
+    .index .masthead { display: flex; align-items: baseline; justify-content: space-between; padding: 21px 20px 17px; border-bottom: 2px solid var(--ink); }
+    .index .title { font-family: Georgia, "Noto Serif SC", serif; font-size: 25px; font-weight: 700; line-height: 1; }
+    .index .edition { color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 10px; }
+    .index .index-form { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 13px 20px; border-bottom: 1px solid var(--line); }
+    .index .plus { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--red); color: white; font-size: 19px; line-height: 1; }
+    .index .index-input { min-width: 0; height: 36px; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 15px; }
+    .index .index-input::placeholder { color: var(--muted); }
+    .index .save { height: 30px; border: 1px solid var(--ink); border-radius: 6px; background: var(--ink); color: white; padding: 0 10px; font-size: 12px; font-weight: 700; }
+    .index .save:hover { background: var(--red); border-color: var(--red); }
+    .index .index-heading { display: grid; grid-template-columns: 35px minmax(0, 1fr) 48px; padding: 12px 20px 7px; color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 10px; }
+    .index .entries { padding: 0 20px 10px; }
+    .index .entry { display: grid; grid-template-columns: 35px minmax(0, 1fr) 48px; align-items: start; min-height: 55px; padding: 13px 0; border-top: 1px solid var(--line); }
+    .index .entry:first-child { border-top: 0; }
+    .index .entry-number { color: var(--red); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 11px; font-weight: 700; padding-top: 2px; }
+    .index .entry-main { min-width: 0; }
+    .index .entry-top { display: flex; min-width: 0; align-items: center; gap: 8px; }
+    .index .index-check { display: grid; width: 17px; height: 17px; flex: 0 0 auto; place-items: center; border: 1.5px solid oklch(.53 .018 24); border-radius: 4px; background: white; color: white; }
+    .index .index-check:hover { border-color: var(--red); }
+    .index .index-check.done { border-color: var(--red); background: var(--red); }
+    .index .index-check .icon { width: 11px; height: 11px; stroke-width: 2.5; }
+    .index .entry-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+    .index .entry-name.done { color: var(--muted); text-decoration: line-through; }
+    .index .entry-progress { justify-self: end; padding-top: 2px; color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 10px; }
+    .index .sublist { margin: 8px 0 0 25px; padding-left: 12px; border-left: 1px solid var(--line); }
+    .index .sublist[hidden] { display: none; }
+    .index .subentry { display: flex; min-height: 26px; align-items: center; gap: 7px; color: oklch(.38 .016 24); font-size: 12px; }
+    .index .subentry.done { color: var(--muted); text-decoration: line-through; }
+    .index .subentry .index-check { width: 14px; height: 14px; border-radius: 3px; }
+    .index .subentry .icon { width: 9px; height: 9px; }
+    .index .open-child { margin: 5px 0 0 25px; padding: 0; background: transparent; color: var(--red); font-size: 11px; font-weight: 700; }
+    .index .index-footer { display: flex; min-height: 48px; align-items: center; justify-content: space-between; padding: 0 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .index .index-footer button { padding: 6px 0; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; }
+    .index .index-footer button:hover { color: var(--red); }
+
+    @media (max-width: 540px) { .canvas { padding-right: 12px; padding-left: 12px; } .prototype-caption { top: 14px; } .prototype-hint { display: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="prototype-caption"><strong id="caption-title"></strong><span id="caption-copy"></span></header>
+  <main class="canvas"><section id="widget" aria-label="灵感挂件原型"></section></main>
+  <nav class="prototype-bar" aria-label="原型方案切换"><button id="previous" aria-label="上一个方案">‹</button><strong id="variant-label"></strong><button id="next" aria-label="下一个方案">›</button><span class="prototype-hint">也可按 ← / →</span></nav>
+  <script>
+    const icons = {
+      plus: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+      arrow: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>',
+      tick: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>',
+      chevron: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>',
+      close: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>'
+    };
+    const directions = {
+      signal: { name: '1 · 午夜信号', title: '午夜信号', copy: '深色、直接、始终待命。像在夜里把一个念头钉回现实。' },
+      index: { name: '2 · 每日索引', title: '每日索引', copy: '冷白、清晰、可以久看。像把每天的念头编成一页私人目录。' }
+    };
+    const order = ['signal', 'index'];
+    const params = new URLSearchParams(location.search);
+    let current = directions[params.get('variant')] ? params.get('variant') : 'index';
+    const notes = [
+      { text: '做桌面灵感挂件', children: ['画页面原型', '选择桌面技术', '打包 Windows 安装包'] },
+      { text: '研究 Android 与 Windows 同步' },
+      { text: '整理下周要学习的内容' }
+    ];
+
+    function doneButton(className) { return `<button class="${className}" aria-label="标记完成"></button>`; }
+    function signalMarkup() {
+      const rows = notes.map((note, index) => {
+        const hasChildren = note.children?.length;
+        const children = hasChildren ? `<div class="children">${note.children.map((child, childIndex) => `<div class="child${childIndex === 0 ? ' done' : ''}">${doneButton('check' + (childIndex === 0 ? ' done' : ''))}<span>${child}</span></div>`).join('')}<button class="add-child">+ 添加子 Note</button></div>` : '';
+        return `<article class="signal-note"><div class="note-head"><span class="sequence">0${index + 1}</span>${doneButton('check')}<span class="note-name">${note.text}</span>${hasChildren ? '<span class="progress">1 / 3</span>' : ''}${hasChildren ? `<button class="expand" aria-label="收起子 Note" aria-expanded="true">${icons.chevron}</button>` : ''}</div>${children}</article>`;
+      }).join('');
+      return `<div class="signal"><header class="topline"><span class="wordmark"><i class="signal-dot"></i>一念 · CAPTURE</span><button class="quiet-action" aria-label="关闭预览">${icons.close}</button></header><section class="capture"><div class="capture-label"><strong>现在，不要让它溜走。</strong><span>ENTER 即记录</span></div><form class="capture-form"><input class="capture-input" aria-label="记录新的灵感" placeholder="此刻想留下什么？" autocomplete="off"><button class="capture-send" aria-label="记录 Note" type="submit">${icons.arrow}</button></form></section><div class="queue-title"><span>仍在脑海里</span><span>${notes.length.toString().padStart(2, '0')} NOTES</span></div><section class="queue">${rows}</section><footer class="foot"><span>先把念头留住，其他稍后再说。</span><button class="all-notes">全部记录 →</button></footer></div>`;
+    }
+    function indexMarkup() {
+      const rows = notes.map((note, index) => {
+        const hasChildren = note.children?.length;
+        const children = hasChildren ? `<div class="sublist">${note.children.map((child, childIndex) => `<div class="subentry${childIndex === 0 ? ' done' : ''}">${doneButton('index-check' + (childIndex === 0 ? ' done' : ''))}<span>${child}</span></div>`).join('')}<button class="open-child">+ 添加子 Note</button></div>` : '';
+        return `<article class="entry"><span class="entry-number">${String(index + 1).padStart(2, '0')}</span><div class="entry-main"><div class="entry-top">${doneButton('index-check')}<span class="entry-name">${note.text}</span></div>${children}</div><span class="entry-progress">${hasChildren ? '1 / 3' : '—'}</span></article>`;
+      }).join('');
+      return `<div class="index"><header class="masthead"><span class="title">每日索引</span><span class="edition">VOL. 07 · 今天</span></header><form class="index-form"><span class="plus">+</span><input class="index-input" aria-label="记录新的灵感" placeholder="写下一条，不必想清楚" autocomplete="off"><button class="save" type="submit">收录</button></form><div class="index-heading"><span>NO.</span><span>尚未完成的念头</span><span>进度</span></div><section class="entries">${rows}</section><footer class="index-footer"><span>本页仅显示未完成的主 Note</span><button>全部记录 →</button></footer></div>`;
+    }
+    function bindInteractions() {
+      const widget = document.getElementById('widget');
+      widget.querySelector('form').addEventListener('submit', event => {
+        event.preventDefault();
+        const input = widget.querySelector('input');
+        const text = input.value.trim();
+        if (!text) { input.focus(); return; }
+        notes.unshift({ text });
+        render();
+        document.getElementById('widget').querySelector('input').focus();
+      });
+      widget.querySelectorAll('.check, .index-check').forEach(button => button.addEventListener('click', () => {
+        button.classList.toggle('done');
+        button.innerHTML = button.classList.contains('done') ? icons.tick : '';
+        const row = button.closest('.note-head, .child, .entry-top, .subentry');
+        row?.classList.toggle('done');
+        row?.querySelector('.note-name, .entry-name')?.classList.toggle('done');
+      }));
+      widget.querySelectorAll('.expand').forEach(button => button.addEventListener('click', () => {
+        const children = button.closest('.signal-note').querySelector('.children');
+        const isOpen = !children.hidden;
+        children.hidden = isOpen;
+        button.setAttribute('aria-expanded', String(!isOpen));
+        button.setAttribute('aria-label', isOpen ? '展开子 Note' : '收起子 Note');
+      }));
+    }
+    function render() {
+      const direction = directions[current];
+      const widget = document.getElementById('widget');
+      widget.innerHTML = current === 'signal' ? signalMarkup() : indexMarkup();
+      document.getElementById('variant-label').textContent = direction.name;
+      document.getElementById('caption-title').textContent = direction.title;
+      document.getElementById('caption-copy').textContent = direction.copy;
+      const url = new URL(location);
+      url.searchParams.set('variant', current);
+      history.replaceState({}, '', url);
+      bindInteractions();
+    }
+    function move(delta) { current = order[(order.indexOf(current) + delta + order.length) % order.length]; render(); }
+    document.getElementById('previous').onclick = () => move(-1);
+    document.getElementById('next').onclick = () => move(1);
+    addEventListener('keydown', event => { if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return; if (event.key === 'ArrowLeft') move(-1); if (event.key === 'ArrowRight') move(1); });
+    render();
+  </script>
+</body>
+</html>
