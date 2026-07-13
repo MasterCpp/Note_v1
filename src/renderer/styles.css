@@ -87,4 +87,23 @@ button:focus-visible, input:focus-visible { outline: 3px solid oklch(.69 .15 24)
 .tab { padding: 9px 0 8px; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-size: 12px; }
 .tab.active { border-bottom-color: var(--red); color: var(--ink); font-weight: 700; }
 .timestamp { display: block; margin-top: 5px; color: var(--muted); font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 10px; }
+.all-screen .all-head { padding: 21px 27px 17px; }
+.all-screen .back { gap: 7px; font-size: 15px; }
+.all-screen .back .icon { width: 18px; height: 18px; }
+.all-screen .search-toggle { width: 36px; height: 36px; }
+.all-screen .search-toggle .icon { width: 20px; height: 20px; }
+.all-screen .tabs { gap: 21px; padding: 0 27px; }
+.all-screen .tab { padding: 12px 0 11px; font-size: 14px; }
+.all-screen .entries { padding: 0 27px 14px; }
+.all-screen .entry { grid-template-columns: 45px minmax(0, 1fr) 65px; min-height: 74px; padding: 17px 0; }
+.all-screen .entry-number { padding-top: 3px; font-size: 13px; }
+.all-screen .entry-top { gap: 10px; }
+.all-screen .check { width: 20px; height: 20px; border-radius: 5px; }
+.all-screen .check .icon { width: 12px; height: 12px; stroke-width: 2.3; }
+.all-screen .entry-title { font-size: 18px; }
+.all-screen .entry-side { min-height: 26px; gap: 7px; }
+.all-screen .entry-progress { font-size: 12px; }
+.all-screen .delete-icon { width: 30px; height: 30px; }
+.all-screen .delete-icon .icon { width: 17px; height: 17px; }
+.all-screen .timestamp { margin-top: 7px; font-size: 12px; }
 @media (max-width: 410px) { .masthead { padding-right: 15px; padding-left: 15px; } .composer, .list-heading { padding-right: 15px; padding-left: 15px; } .entries { padding-right: 15px; padding-left: 15px; } .footer { padding-right: 15px; padding-left: 15px; } }
