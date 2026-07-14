@@ -28,7 +28,7 @@ function entry(note, index, detailed = false) {
   const editing = state.editingId === note.id;
   const title = editing ? `<input class="edit-input" data-edit-id="${note.id}" value="${escapeHtml(note.content)}">` : `<button class="entry-title${note.completedAt ? ' done' : ''}" data-action="edit" data-id="${note.id}">${escapeHtml(note.content)}</button>`;
   const addChild = state.addingChildTo === note.id ? `<form class="child-form" data-child-form="${note.id}"><input aria-label="子 Note" placeholder="下一步是什么？" autofocus><button>添加</button></form>` : '';
-  const actionRow = !note.completedAt ? `<div class="entry-actions"><button class="text-action" data-action="add-child" data-id="${note.id}">+ 子 Note</button></div>${addChild}` : '';
+  const actionRow = !note.completedAt ? `<div class="entry-actions"><button class="text-action" data-action="add-child" data-id="${note.id}">Add</button></div>${addChild}` : '';
   const progress = note.children?.length ? `${note.children.filter((child) => child.completedAt).length} / ${note.children.length}` : '';
   return `<article class="entry"><span class="entry-number">${String(index + 1).padStart(2, '0')}</span><div class="entry-main"><div class="entry-top">${checkbox(note)}${title}</div>${childRows ? `<div class="sublist">${childRows}</div>` : ''}${actionRow}${detailed ? `<time class="timestamp">创建于 ${formatDate(note.createdAt)}</time>` : ''}</div><span class="entry-side"><span class="entry-progress">${progress}</span><button class="delete-icon" data-action="delete" data-id="${note.id}" aria-label="删除 Note" title="删除 Note">${icons.trash}</button></span></article>`;
 }
