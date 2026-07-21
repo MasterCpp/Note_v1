@@ -52,6 +52,7 @@ function createWindow() {
     minWidth: 390,
     minHeight: 480,
     frame: false,
+    icon: path.join(__dirname, '..', 'assets', 'app-icon.png'),
     backgroundColor: '#ffffff',
     show: false,
     webPreferences: {

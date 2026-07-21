@@ -14,7 +14,7 @@
     "productName": "每日索引",
     "electronDist": "electron-runtime",
     "files": ["src/**/*", "assets/**/*", "package.json"],
-    "win": { "target": "nsis" },
+    "win": { "target": "nsis", "icon": "assets/app-icon.ico" },
     "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
   },
   "devDependencies": {
