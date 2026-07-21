@@ -15,7 +15,9 @@ function showWidget({ focusComposer = false } = {}) {
 }
 
 function createTray() {
-  const icon = nativeImage.createFromPath(path.join(__dirname, '..', 'assets', 'tray-icon.svg')).resize({ width: 16, height: 16 });
+  // Windows notification-area rendering is unreliable for SVG files. Use the
+  // raster app icon here so the tray never falls back to a blank white tile.
+  const icon = nativeImage.createFromPath(path.join(__dirname, '..', 'assets', 'app-icon.png')).resize({ width: 16, height: 16 });
   tray = new Tray(icon);
   tray.setToolTip('每日索引');
   const refreshMenu = () => {
